@@ -14,10 +14,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build
-      env:
-        working-directory: ./advent_of_code
+      working-directory: advent_of_code
       run: cargo build --verbose
     - name: Run tests
-      env:
-        working-directory: ./advent_of_code
+      working-directory: advent_of_code
       run: cargo test --verbose
