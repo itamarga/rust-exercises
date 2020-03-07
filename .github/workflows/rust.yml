@@ -10,7 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      working-directory: ./advent_of_code
     steps:
     - uses: actions/checkout@v2
     - name: Build
