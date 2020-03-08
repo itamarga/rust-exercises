@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 pub fn solve_day_1() -> Result<u32, std::io::Error> {
-    let input = File::open("src/day1/input.txt")?;
+    let input = File::open("src/day1_input.txt")?;
     let mut total_fuel = 0;
 
     let reader = BufReader::new(input);
