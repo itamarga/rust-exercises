@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 pub fn solve_day_4_pt1() -> (u32, u32) {
     let start = 271973;
     let end = 785961;
