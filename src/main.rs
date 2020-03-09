@@ -13,5 +13,6 @@ fn main() {
     //     "Day 3 part 2 solution is: {:?}",
     //     day3::find_shortest_path_to_intersection()
     // );
-    println!("Day 4 solution is: {:?}", day4::solve_day_4());
+    let (first, second) = day4::solve_day_4_pt1();
+    println!("Day 4 pt1 solution is: {}. Pt2 is: {}", first, second);
 }
