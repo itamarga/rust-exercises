@@ -24,7 +24,7 @@ const INTPUT_PATH: &str = "src/day6_input.txt";
 pub fn solve_day_6_pt_1() -> usize {
     let input = std::fs::read_to_string(INTPUT_PATH).unwrap();
     let tree = make_tree(&input);
-    println!("{:?}", tree);
+    // println!("{:?}", tree);
     let mut count = 0;
     for node_name in tree.keys() {
         let node = &tree.get(node_name).unwrap();
@@ -42,20 +42,20 @@ fn make_tree(input: &str) -> HashMap<String, Node> {
         if obj1 == "5JZ" {
             let a = "this";
         }
-        tree.entry(obj1.clone()).or_insert(Node {
-            // name: obj1.clone(),
-            // parent: None,
+        tree.entry(obj1)
+            .or_insert(Node {
+                // name: obj1.clone(),
+                // parent: None,
+                children: vec![],
+            })
+            .children
+            .push(obj2.clone());
+
+        tree.entry(obj2).or_insert(Node {
+            // name: obj2.clone(),
+            // parent: Some(obj1.clone()),
             children: vec![],
         });
-        tree.get_mut(&obj1).unwrap().children.push(obj2.clone());
-        tree.insert(
-            obj2.clone(),
-            Node {
-                // name: obj2.clone(),
-                // parent: Some(obj1.clone()),
-                children: vec![],
-            },
-        );
     }
     tree
 }
