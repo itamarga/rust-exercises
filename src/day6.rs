@@ -38,7 +38,7 @@ pub fn solve_day_6_pt_2() -> usize {
     let input = std::fs::read_to_string(INTPUT_PATH).unwrap();
     let tree = make_tree(&input);
     // println!("{:?}", tree);
-    orbit_transfer_calc(&tree, tree.get("YOU").unwrap(), tree.get("SAN").unwrap())
+    orbit_transfer_calc(&tree, "YOU".to_string(), "SAN".to_string())
 }
 fn make_tree(input: &str) -> HashMap<String, Node> {
     let mut tree = HashMap::new();
@@ -56,18 +56,27 @@ fn make_tree(input: &str) -> HashMap<String, Node> {
             .children
             .push(obj2.clone());
 
-        let child_depth = tree.get(&obj1).unwrap().depth + 1;
-
         let child = tree.entry(obj2.clone()).or_insert(Node {
             // name: obj2.clone(),
             parent: Some(obj1.clone()),
-            depth: child_depth,
+            depth: 0,
             children: vec![],
         });
-        child.depth = child_depth;
         child.parent = Some(obj1.clone());
     }
+
+    set_depth(&mut tree, &"COM".to_string(), 0);
+    println!("{:?}", tree);
     tree
+}
+
+fn set_depth(tree: &mut HashMap<String, Node>, key: &String, depth: usize) {
+    let node = tree.get_mut(key).unwrap();
+    node.depth = depth;
+    let children = node.children.clone();
+    for child in children {
+        set_depth(tree, &child, depth + 1);
+    }
 }
 
 fn count_orbits(tree: &HashMap<String, Node>, node: &Node) -> usize {
@@ -79,25 +88,25 @@ fn count_orbits(tree: &HashMap<String, Node>, node: &Node) -> usize {
     count
 }
 
-fn orbit_transfer_calc(tree: &HashMap<String, Node>, origin: &Node, target: &Node) -> usize {
-    let count = 0;
-    // let parent1 = origin.parent.clone();
-    // let parent2 = target.parent.clone();
-    let mut curr1 = &origin;
-    let mut curr2 = &target;
-    while curr1.parent != curr2.parent {
-        if curr1.depth < curr2.depth {
-            let parent = &curr2.parent.clone().unwrap();
-            curr2 = &tree.get(parent).unwrap();
-        } else {
-            let parent = &curr1.parent.clone().unwrap();
-            curr1 = &tree.get(parent).unwrap();
-        }
+fn orbit_transfer_calc(tree: &HashMap<String, Node>, origin: String, target: String) -> usize {
+    let mut steps = 0;
+    let mut node1 = origin;
+    let mut node2 = target;
+    while node1 != node2 {
+        let curr1 = tree.get(&node1).unwrap();
+        let curr2 = tree.get(&node2).unwrap();
         println!(
-            "curr1 parent: {}, curr2 parent: {}",
-            curr1.parent.clone().unwrap(),
-            curr2.parent.clone().unwrap()
+            "Curr1: {} Depth1: {}, Curr2: {} Depth2: {}",
+            node1, curr1.depth, node2, curr2.depth
         );
+
+        if curr1.depth > curr2.depth {
+            node1 = curr1.parent.clone().unwrap();
+        } else {
+            node2 = curr2.parent.clone().unwrap();
+        }
+        steps += 1;
     }
-    0
+    println!("Curr1: {}, Curr2: {}", node1, node2);
+    steps - 2
 }
