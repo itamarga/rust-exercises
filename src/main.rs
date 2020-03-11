@@ -21,4 +21,5 @@ fn main() {
     // println!("Day 5 pt2 solution is: {}.", day5::solve_day_5_pt2());
 
     println!("Day 6 pt 1 solution is: {}.", day6::solve_day_6_pt_1());
+    println!("Day 6 pt 2 solution is: {}.", day6::solve_day_6_pt_2());
 }
