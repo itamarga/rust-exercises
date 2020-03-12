@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+#[allow(clippy::unreadable_literal)]
 
 pub fn solve_day_4_pt1() -> (u32, u32) {
     let start = 271973;
@@ -17,11 +18,11 @@ pub fn solve_day_4_pt1() -> (u32, u32) {
 }
 
 fn is_valid_pass_pt1(num: u32) -> bool {
-    return has_double_digits(num) && has_rising_digits(num);
+    has_double_digits(num) && has_rising_digits(num)
 }
 
 fn is_valid_pass_pt2(num: u32) -> bool {
-    return has_double_digits_isolated(num) && has_rising_digits(num);
+    has_double_digits_isolated(num) && has_rising_digits(num)
 }
 
 fn has_double_digits(mut num: u32) -> bool {
@@ -32,9 +33,9 @@ fn has_double_digits(mut num: u32) -> bool {
             return true;
         }
         num /= 10;
-        last_digit = digit;
+        last_digit = digit
     }
-    return false;
+    false
 }
 
 fn has_double_digits_isolated(mut num: u32) -> bool {
@@ -54,7 +55,7 @@ fn has_double_digits_isolated(mut num: u32) -> bool {
         num /= 10;
         last_digit = digit;
     }
-    return false;
+    false
 }
 
 fn has_rising_digits(mut num: u32) -> bool {
@@ -67,5 +68,5 @@ fn has_rising_digits(mut num: u32) -> bool {
         num /= 10;
         last_digit = digit;
     }
-    return true;
+    true
 }

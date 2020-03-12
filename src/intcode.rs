@@ -22,7 +22,7 @@ impl IntcodeMachine {
                 let target_pos = self.get_pos(3, (opcode / 10000) % 10 == 0);
                 self.intcodes[target_pos] = self.intcodes[src1_pos] + self.intcodes[src2_pos];
                 self.pos += 4;
-                return NoVal;
+                NoVal
             }
             2 => {
                 let src1_pos = self.get_pos(1, (opcode / 100) % 10 == 0);
@@ -30,19 +30,19 @@ impl IntcodeMachine {
                 let target_pos = self.get_pos(3, (opcode / 10000) % 10 == 0);
                 self.intcodes[target_pos] = self.intcodes[src1_pos] * self.intcodes[src2_pos];
                 self.pos += 4;
-                return NoVal;
+                NoVal
             }
             3 => {
                 let param = arg.unwrap();
                 let target_pos = self.get_pos(1, opcode / 100 == 0);
                 self.intcodes[target_pos] = param;
                 self.pos += 2;
-                return NoVal;
+                NoVal
             }
             4 => {
                 let src_pos = self.get_pos(1, opcode / 100 == 0);
                 self.pos += 2;
-                return Val(self.intcodes[src_pos]);
+                Val(self.intcodes[src_pos])
             }
             5 => {
                 let bool_pos = self.get_pos(1, (opcode / 100) % 10 == 0);
@@ -52,7 +52,7 @@ impl IntcodeMachine {
                 } else {
                     self.pos += 3;
                 }
-                return NoVal;
+                NoVal
             }
             6 => {
                 let bool_pos = self.get_pos(1, (opcode / 100) % 10 == 0);
@@ -62,7 +62,7 @@ impl IntcodeMachine {
                 } else {
                     self.pos += 3;
                 }
-                return NoVal;
+                NoVal
             }
             7 => {
                 let src1_pos = self.get_pos(1, (opcode / 100) % 10 == 0);
@@ -74,7 +74,7 @@ impl IntcodeMachine {
                     self.intcodes[target_pos] = 0;
                 }
                 self.pos += 4;
-                return NoVal;
+                NoVal
             }
             8 => {
                 let src1_pos = self.get_pos(1, (opcode / 100) % 10 == 0);
@@ -86,9 +86,9 @@ impl IntcodeMachine {
                     self.intcodes[target_pos] = 0;
                 }
                 self.pos += 4;
-                return NoVal;
+                NoVal
             }
-            99 => return Halt,
+            99 => Halt,
             _ => panic!("Bad code!"),
         }
     }
@@ -120,7 +120,7 @@ impl From<&String> for IntcodeMachine {
     }
 }
 
-pub fn run_intcode_noun_verb(intcode_path: &String, noun: i32, verb: i32) -> i32 {
+pub fn run_intcode_noun_verb(intcode_path: &str, noun: i32, verb: i32) -> i32 {
     let input = std::fs::read_to_string(intcode_path).unwrap();
     let mut intcode = parse_intcode(&input);
     intcode[1] = noun;
@@ -129,9 +129,9 @@ pub fn run_intcode_noun_verb(intcode_path: &String, noun: i32, verb: i32) -> i32
     intcode[0]
 }
 
-fn parse_intcode(intcode_str: &String) -> Vec<i32> {
+fn parse_intcode(intcode_str: &str) -> Vec<i32> {
     intcode_str
-        .split(",")
+        .split(',')
         .map(|int| int.parse::<i32>().unwrap())
         .collect::<Vec<i32>>()
 }
@@ -146,7 +146,6 @@ fn process_intcode(intcode: &mut Vec<i32>) {
             _ => panic!("Bad code!"),
         };
     }
-    ()
 }
 
 fn add(intcode: &mut Vec<i32>, idx: usize) -> usize {
@@ -154,12 +153,12 @@ fn add(intcode: &mut Vec<i32>, idx: usize) -> usize {
     let b_idx = intcode[idx + 2] as usize;
     let target_idx = intcode[idx + 3] as usize;
     intcode[target_idx] = intcode[a_idx] + intcode[b_idx];
-    return idx + 4;
+    idx + 4
 }
 fn mult(intcode: &mut Vec<i32>, idx: usize) -> usize {
     let a_idx = intcode[idx + 1] as usize;
     let b_idx = intcode[idx + 2] as usize;
     let target_idx = intcode[idx + 3] as usize;
     intcode[target_idx] = intcode[a_idx] * intcode[b_idx];
-    return idx + 4;
+    idx + 4
 }

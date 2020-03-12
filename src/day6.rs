@@ -38,12 +38,12 @@ pub fn solve_day_6_pt_2() -> usize {
     let input = std::fs::read_to_string(INTPUT_PATH).unwrap();
     let tree = make_tree(&input);
     // println!("{:?}", tree);
-    orbit_transfer_calc(&tree, "YOU".to_string(), "SAN".to_string())
+    orbit_transfer_calc(&tree, "YOU", "SAN")
 }
 fn make_tree(input: &str) -> HashMap<String, Node> {
     let mut tree = HashMap::new();
     for line in input.lines() {
-        let objects = line.split(")").collect::<Vec<&str>>();
+        let objects = line.split(')').collect::<Vec<&str>>();
         let obj1 = objects[0].to_string();
         let obj2 = objects[1].to_string();
         tree.entry(obj1.clone())
@@ -66,11 +66,11 @@ fn make_tree(input: &str) -> HashMap<String, Node> {
     }
 
     set_depth(&mut tree, &"COM".to_string(), 0);
-    println!("{:?}", tree);
+    // println!("{:?}", tree);
     tree
 }
 
-fn set_depth(tree: &mut HashMap<String, Node>, key: &String, depth: usize) {
+fn set_depth(tree: &mut HashMap<String, Node>, key: &str, depth: usize) {
     let node = tree.get_mut(key).unwrap();
     node.depth = depth;
     let children = node.children.clone();
@@ -88,25 +88,25 @@ fn count_orbits(tree: &HashMap<String, Node>, node: &Node) -> usize {
     count
 }
 
-fn orbit_transfer_calc(tree: &HashMap<String, Node>, origin: String, target: String) -> usize {
+fn orbit_transfer_calc(tree: &HashMap<String, Node>, origin: &str, target: &str) -> usize {
     let mut steps = 0;
     let mut node1 = origin;
     let mut node2 = target;
     while node1 != node2 {
-        let curr1 = tree.get(&node1).unwrap();
-        let curr2 = tree.get(&node2).unwrap();
-        println!(
-            "Curr1: {} Depth1: {}, Curr2: {} Depth2: {}",
-            node1, curr1.depth, node2, curr2.depth
-        );
+        let curr1 = tree.get(node1).unwrap();
+        let curr2 = tree.get(node2).unwrap();
+        // println!(
+        //     "Curr1: {} Depth1: {}, Curr2: {} Depth2: {}",
+        //     node1, curr1.depth, node2, curr2.depth
+        // );
 
         if curr1.depth > curr2.depth {
-            node1 = curr1.parent.clone().unwrap();
+            node1 = &curr1.parent.as_ref().unwrap();
         } else {
-            node2 = curr2.parent.clone().unwrap();
+            node2 = &curr2.parent.as_ref().unwrap();
         }
         steps += 1;
     }
-    println!("Curr1: {}, Curr2: {}", node1, node2);
+    // println!("Curr1: {}, Curr2: {}", node1, node2);
     steps - 2
 }
