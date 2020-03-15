@@ -3,7 +3,7 @@
 use crate::intcode::*;
 const INTCODE_PATH: &str = "src/day5_input.txt";
 
-pub fn solve_day_5_pt1() -> i32 {
+pub fn solve_day_5_pt1() -> i64 {
     let input = std::fs::read_to_string(INTCODE_PATH).unwrap();
     let mut machine = IntcodeMachine::from(&input);
     let mut ret = machine.step(Some(1));
@@ -20,7 +20,7 @@ pub fn solve_day_5_pt1() -> i32 {
     final_result
 }
 
-pub fn solve_day_5_pt2() -> i32 {
+pub fn solve_day_5_pt2() -> i64 {
     let input = std::fs::read_to_string(INTCODE_PATH).unwrap();
     let mut machine = IntcodeMachine::from(&input);
     let mut ret = machine.step(Some(5));

@@ -10,6 +10,7 @@ mod day5;
 mod day6;
 mod day7;
 mod day8;
+mod day9;
 mod intcode;
 
 fn main() {
@@ -29,7 +30,8 @@ fn main() {
     // println!("Day 6 pt 2 solution is: {}.", day6::solve_day_6_pt_2());
     // println!("Day 7 pt 1 solution is: {}.", day7::solve_day_7_pt_1());
     // println!("Day 7 pt 2 solution is: {}.", day7::solve_day_7_pt_2());
-    day8::solve_day_8_pt_2();
-    println!("Day 8 pt 2 solution is done running.");
+    // day8::solve_day_8_pt_2();
+    // println!("Day 8 pt 2 solution is done running.");
     // println!("Day 8 pt 2 solution is: {}.", day8::solve_day_8_pt_2());
+    day9::day9_pt1();
 }
