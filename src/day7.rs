@@ -30,6 +30,44 @@ fn run_amplifier(phase_settings: &[u8]) -> i32 {
     ret
 }
 
+pub fn solve_day_7_pt_2() -> i32 {
+    permutations([5, 6, 7, 8, 9])
+        .par_iter()
+        .map(|permutation| run_amplifier_feedback(permutation))
+        .max()
+        .unwrap()
+}
+
+fn run_amplifier_feedback(phase_settings: &[u8]) -> i32 {
+    let mut machines = [
+        IntcodeMachine::from(INPUT),
+        IntcodeMachine::from(INPUT),
+        IntcodeMachine::from(INPUT),
+        IntcodeMachine::from(INPUT),
+        IntcodeMachine::from(INPUT),
+    ];
+    for (idx, phase) in phase_settings.iter().enumerate() {
+        machines[idx].step(Some(*phase as i32));
+    }
+    let mut ret = 0;
+    loop {
+        for idx in 0..5 {
+            'inner: loop {
+                match machines[idx].step(Some(ret)) {
+                    IntcodeReturns::Val(result) => {
+                        ret = result;
+                        break 'inner;
+                    }
+                    IntcodeReturns::Halt => {
+                        return ret;
+                    }
+                    _ => continue,
+                }
+            }
+        }
+    }
+}
+
 fn permutations(a: [u8; 5]) -> Vec<Vec<u8>> {
     let mut partial = vec![];
     partial.push(vec![a[0]]);
