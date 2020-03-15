@@ -1,4 +1,4 @@
-#[allow(clippy::unreadable_literal)]
+#![allow(clippy::unreadable_literal)]
 // #[macro_use]
 //extern crate tokio;
 extern crate rayon;
