@@ -100,6 +100,10 @@ impl IntcodeMachine {
             self.pos + arg_num as usize
         }
     }
+
+    pub fn reset(&mut self) {
+        self.pos = 0;
+    }
 }
 
 impl From<Vec<i32>> for IntcodeMachine {
@@ -113,6 +117,15 @@ impl From<Vec<i32>> for IntcodeMachine {
 
 impl From<&String> for IntcodeMachine {
     fn from(intcodes_str: &String) -> Self {
+        IntcodeMachine {
+            intcodes: parse_intcode(intcodes_str),
+            pos: 0,
+        }
+    }
+}
+
+impl From<&str> for IntcodeMachine {
+    fn from(intcodes_str: &str) -> Self {
         IntcodeMachine {
             intcodes: parse_intcode(intcodes_str),
             pos: 0,
