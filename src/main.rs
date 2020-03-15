@@ -1,6 +1,7 @@
 #[allow(clippy::unreadable_literal)]
-#[macro_use]
+// #[macro_use]
 //extern crate tokio;
+extern crate rayon;
 mod day1;
 mod day2;
 mod day3;
