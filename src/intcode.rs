@@ -1,3 +1,5 @@
+#![allow(dead_code, unused_imports, clippy::unreadable_literal)]
+
 const STEP_LIMIT: u32 = 1000000;
 pub struct IntcodeMachine {
     intcodes: Vec<i64>,
@@ -124,9 +126,6 @@ impl IntcodeMachine {
     }
 
     pub fn run(&mut self, opt: Option<i64>) -> IntcodeReturns {
-        // if let Some(_) = opt {
-        //     self.step(opt);
-        // }
         for _ in 0..STEP_LIMIT {
             let ret = self.step(opt);
             match ret {

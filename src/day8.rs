@@ -1,4 +1,6 @@
-use image::*;
+#![allow(dead_code, clippy::unreadable_literal)]
+use image;
+use rayon::prelude::*;
 const INTPUT_PATH: &str = "src/day8_input.txt";
 const IMG_WIDTH: u32 = 25;
 const IMG_HEIGHT: u32 = 6;
@@ -25,7 +27,7 @@ pub fn solve_day_8_pt_1() -> u32 {
 pub fn alt_solve_day_8_pt_1() -> u32 {
     let input = std::fs::read(INTPUT_PATH).unwrap();
     let chunk = input
-        .chunks(IMG_SIZE)
+        .par_chunks(IMG_SIZE)
         .min_by_key(|chunk| chunk.iter().filter(|n| (**n) as char == '0').count())
         .unwrap();
 
@@ -58,7 +60,14 @@ pub fn solve_day_8_pt_2() {
         }
     }
 
-    image::save_buffer("day8_pass.png", &img, IMG_WIDTH, IMG_HEIGHT, ColorType::L8);
+    image::save_buffer(
+        "day8_pass.png",
+        &img,
+        IMG_WIDTH,
+        IMG_HEIGHT,
+        image::ColorType::L8,
+    )
+    .unwrap();
 }
 
 pub fn alt_solve_day_8_pt_2() {
@@ -84,6 +93,7 @@ pub fn alt_solve_day_8_pt_2() {
         &img,
         IMG_WIDTH,
         IMG_HEIGHT,
-        ColorType::L8,
-    );
+        image::ColorType::L8,
+    )
+    .unwrap();
 }

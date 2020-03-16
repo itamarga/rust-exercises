@@ -1,3 +1,4 @@
+#![allow(dead_code, clippy::unreadable_literal)]
 use crate::intcode::*;
 use rayon::prelude::*;
 
@@ -51,9 +52,9 @@ fn run_amplifier_feedback(phase_settings: &[u8]) -> i64 {
     }
     let mut ret = 0;
     loop {
-        for idx in 0..5 {
+        for machine in &mut machines {
             'inner: loop {
-                match machines[idx].step(Some(ret)) {
+                match machine.step(Some(ret)) {
                     IntcodeReturns::Val(result) => {
                         ret = result;
                         break 'inner;
