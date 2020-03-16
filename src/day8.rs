@@ -22,6 +22,18 @@ pub fn solve_day_8_pt_1() -> u32 {
     ones * twos
 }
 
+pub fn alt_solve_day_8_pt_1() -> u32 {
+    let input = std::fs::read(INTPUT_PATH).unwrap();
+    let chunk = input
+        .chunks(IMG_SIZE)
+        .min_by_key(|chunk| chunk.iter().filter(|n| (**n) as char == '0').count())
+        .unwrap();
+
+    let ones = chunk.iter().filter(|n| (**n) as char == '1').count() as u32;
+    let twos = chunk.iter().filter(|n| (**n) as char == '2').count() as u32;
+    ones * twos
+}
+
 fn count_char(segment: &str, c: char) -> u32 {
     let mut zero_count = 0;
     for char in segment.chars() {
@@ -46,6 +58,32 @@ pub fn solve_day_8_pt_2() {
         }
     }
 
-    // let encoder = image::bmp::BMPEncoder::new();
     image::save_buffer("day8_pass.png", &img, IMG_WIDTH, IMG_HEIGHT, ColorType::L8);
+}
+
+pub fn alt_solve_day_8_pt_2() {
+    let input = std::fs::read(INTPUT_PATH).unwrap();
+    let img: [u8; IMG_SIZE] = input
+        .chunks(IMG_SIZE)
+        .fold([2; IMG_SIZE], |mut acc, chunk| {
+            acc.iter_mut()
+                .zip(chunk.iter())
+                .for_each(|(pixel, rpixel)| {
+                    if *pixel == 2 {
+                        match *rpixel as char {
+                            '0' => *pixel = 0,
+                            '1' => *pixel = 255,
+                            _ => {}
+                        }
+                    }
+                });
+            acc
+        });
+    image::save_buffer(
+        "alt_day8_pass.png",
+        &img,
+        IMG_WIDTH,
+        IMG_HEIGHT,
+        ColorType::L8,
+    );
 }
