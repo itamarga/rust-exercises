@@ -33,12 +33,12 @@ pub fn solve_day_10_p1() {
     let asteroids = parse_input(INPUT);
     let answer = asteroids
         .iter()
-        .max_by_key(|asteroid| calc_seen_asteroids(asteroid, &asteroids))
+        .map(|asteroid| (asteroid, calc_seen_asteroids(asteroid, &asteroids)))
+        .max_by_key(|&(_, m)| m)
         .unwrap();
     println!(
         "asteroid {:?} can see the most, seeing {}",
-        answer,
-        calc_seen_asteroids(answer, &asteroids)
+        answer.0, answer.1
     );
 }
 
