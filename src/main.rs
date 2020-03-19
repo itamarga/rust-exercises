@@ -3,6 +3,7 @@
 //extern crate tokio;
 extern crate rayon;
 mod day1;
+mod day10;
 mod day2;
 mod day3;
 mod day4;
@@ -36,4 +37,5 @@ fn main() {
     //assert_eq!(day8::solve_day_8_pt_1(), day8::alt_solve_day_8_pt_1());
     day8::alt_solve_day_8_pt_2();
     // day9::day9_pt1();
+    day10::solve_day_10_p1();
 }
