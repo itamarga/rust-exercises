@@ -8,6 +8,28 @@ const INPUT: &str = ".#....#####...#..
 ..#.....#...###..
 ..#.#.....#....##";
 
+// Example
+// const INPUT: &str = ".#..##.###...#######
+// ##.############..##.
+// .#.######.########.#
+// .###.#######.####.#.
+// #####.##.#.##.###.##
+// ..#####..#.#########
+// ####################
+// #.####....###.#.#.##
+// ##.#################
+// #####.##.###..####..
+// ..######..##.#######
+// ####.##.####...##..#
+// .#####..#.######.###
+// ##...#.##########...
+// #.##########.#######
+// .####.#.###.###.#.##
+// ....##.##.###..#####
+// .#.#.###########.###
+// #.#.#.#####.####.###
+// ###.##.####.##.#..##";
+
 pub fn solve_day_10_pt1() {
     let asteroids = parse_input(INPUT);
     let answer = find_station_location(&asteroids);
@@ -30,37 +52,70 @@ fn find_station_location(asteroids: &Vec<(i32, i32)>) -> ((i32, i32), Vec<(i32, 
 
 pub fn solve_day_10_pt2() {
     let mut asteroids = parse_input(INPUT);
-    // let total_asteroids = asteroids.len();
+    let total_asteroids = asteroids.len();
     let (station, mut seen) = find_station_location(&asteroids);
     // println!("Station at {:?}", station);
     let sort_fn = |asteroid1: &(i32, i32), asteroid2: &(i32, i32)| {
-        let dx1 = (asteroid1.0 - station.0) as f32;
-        let dy1 = (asteroid1.1 - station.1) as f32;
-        let tan1 = dy1 / dx1;
-        let dx2 = (asteroid2.0 - station.0) as f32;
-        let dy2 = (asteroid2.1 - station.1) as f32;
-        let tan2 = dy2 / dx2;
-
-        // let deg2 = ((asteroid2.0 - station.0) as f32 / (station.1 - asteroid2.1) as f32).atan();
-        // let deg2 = ((asteroid2.1 - station.1) as f32 / (asteroid2.0 - station.0) as f32).atan();
-        tan2.partial_cmp(&tan1).unwrap_or(Ordering::Equal)
+        let dx1 = asteroid1.0 - station.0;
+        let dy1 = asteroid1.1 - station.1;
+        let dx2 = asteroid2.0 - station.0;
+        let dy2 = asteroid2.1 - station.1;
+        if dx1 == 0 {
+            if dy1 < 0 {
+                Ordering::Greater
+            } else {
+                if dx2 <= 0 {
+                    Ordering::Less
+                } else {
+                    Ordering::Greater
+                }
+            }
+        } else if dx2 == 0 {
+            if dy2 < 0 {
+                Ordering::Less
+            } else {
+                if dx1 <= 0 {
+                    Ordering::Greater
+                } else {
+                    Ordering::Less
+                }
+            }
+        }
+        // nither is zero
+        else {
+            let tan1 = dy1 / dx1;
+            let tan2 = dy2 / dx2;
+            if dx1 < 0 {
+                if dx2 > 0 {
+                    Ordering::Less
+                } else {
+                    tan2.cmp(&tan1)
+                }
+            } else {
+                if dx2 < 0 {
+                    Ordering::Greater
+                } else {
+                    tan2.cmp(&tan1)
+                }
+            }
+        }
     };
     seen.sort_by(sort_fn);
-    // asteroids = remove_seen(asteroids, &seen);
-    let mut asteroid = (0, 0);
+    asteroids = remove_seen(asteroids, &seen);
 
-    for i in 1..10 {
-        asteroid = seen.pop().unwrap();
+    for i in 1..total_asteroids {
+        let asteroid = seen.pop().unwrap();
         let tan = (asteroid.1 - station.1) as f32 / (asteroid.0 - station.0) as f32;
         println!("{}: {:?} with tan {}", i, asteroid, tan);
-        // if seen.len() == 0 {
-        //     println!("++++++++++++++++recalc seen+++++++++++++++++");
-        //     seen = calc_seen_asteroids(&station, &asteroids);
-        //     seen.sort_by(sort_fn);
-        //     asteroids = remove_seen(asteroids, &seen);
+        if seen.len() == 0 {
+            println!("++++++++++++++++recalc seen+++++++++++++++++");
+            seen = calc_seen_asteroids(&station, &asteroids);
+            seen.sort_by(sort_fn);
+            asteroids = remove_seen(asteroids, &seen);
+        }
     }
 
-    println!("Last to go was: {:?}", asteroid);
+    // println!("Last to go was: {:?}", asteroid);
     // println!("station {:?}", station);
     // println!("{:?}", seen);
 }
