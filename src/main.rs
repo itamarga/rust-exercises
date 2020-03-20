@@ -35,7 +35,8 @@ fn main() {
     // println!("Day 8 pt 2 solution is done running.");
     // println!("Day 8 pt 2 solution is: {}.", day8::solve_day_8_pt_2());
     //assert_eq!(day8::solve_day_8_pt_1(), day8::alt_solve_day_8_pt_1());
-    day8::alt_solve_day_8_pt_2();
+    // day8::alt_solve_day_8_pt_2();
     // day9::day9_pt1();
-    day10::solve_day_10_p1();
+    day10::solve_day_10_pt1();
+    day10::solve_day_10_pt2();
 }
