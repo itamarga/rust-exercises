@@ -2,11 +2,11 @@ extern crate num;
 use num::integer::gcd;
 use std::cmp::Ordering;
 use std::collections;
-const INPUT: &str = ".#....#####...#..
-##...##.#####..##
-##...#...#.#####.
-..#.....#...###..
-..#.#.....#....##";
+// const INPUT: &str = ".#....#####...#..
+// ##...##.#####..##
+// ##...#...#.#####.
+// ..#.....#...###..
+// ..#.#.....#....##";
 
 // Example
 // const INPUT: &str = ".#..##.###...#######
@@ -29,6 +29,35 @@ const INPUT: &str = ".#....#####...#..
 // .#.#.###########.###
 // #.#.#.#####.####.###
 // ###.##.####.##.#..##";
+
+const INPUT: &str = ".###..#######..####..##...#
+########.#.###...###.#....#
+###..#...#######...#..####.
+.##.#.....#....##.#.#.....#
+###.#######.###..##......#.
+#..###..###.##.#.#####....#
+#.##..###....#####...##.##.
+####.##..#...#####.#..###.#
+#..#....####.####.###.#.###
+#..#..#....###...#####..#..
+##...####.######....#.####.
+####.##...###.####..##....#
+#.#..#.###.#.##.####..#...#
+..##..##....#.#..##..#.#..#
+##.##.#..######.#..#..####.
+#.....#####.##........#####
+###.#.#######..#.#.##..#..#
+###...#..#.#..##.##..#####.
+.##.#..#...#####.###.##.##.
+...#.#.######.#####.#.####.
+#..##..###...###.#.#..#.#.#
+.#..#.#......#.###...###..#
+#.##.#.#..#.#......#..#..##
+.##.##.##.#...##.##.##.#..#
+#.###.#.#...##..#####.###.#
+#.####.#..#.#.##.######.#..
+.#.#####.##...#...#.##...#.
+";
 
 pub fn solve_day_10_pt1() {
     let asteroids = parse_input(INPUT);
@@ -83,19 +112,21 @@ pub fn solve_day_10_pt2() {
         }
         // nither is zero
         else {
-            let tan1 = dy1 / dx1;
-            let tan2 = dy2 / dx2;
+            let tan1 = dy1 as f32 / dx1 as f32;
+            let tan2 = dy2 as f32 / dx2 as f32;
+
             if dx1 < 0 {
                 if dx2 > 0 {
                     Ordering::Less
                 } else {
-                    tan2.cmp(&tan1)
+                    tan2.partial_cmp(&tan1).unwrap_or(Ordering::Equal)
                 }
             } else {
+                //dx1 > 0
                 if dx2 < 0 {
                     Ordering::Greater
                 } else {
-                    tan2.cmp(&tan1)
+                    tan2.partial_cmp(&tan1).unwrap_or(Ordering::Equal)
                 }
             }
         }
@@ -106,18 +137,16 @@ pub fn solve_day_10_pt2() {
     for i in 1..total_asteroids {
         let asteroid = seen.pop().unwrap();
         let tan = (asteroid.1 - station.1) as f32 / (asteroid.0 - station.0) as f32;
-        println!("{}: {:?} with tan {}", i, asteroid, tan);
+        if i == 200 {
+            println!("{}: {:?} with tan {}", i, asteroid, tan);
+        }
         if seen.len() == 0 {
-            println!("++++++++++++++++recalc seen+++++++++++++++++");
+            // println!("++++++++++++++++recalc seen+++++++++++++++++");
             seen = calc_seen_asteroids(&station, &asteroids);
             seen.sort_by(sort_fn);
             asteroids = remove_seen(asteroids, &seen);
         }
     }
-
-    // println!("Last to go was: {:?}", asteroid);
-    // println!("station {:?}", station);
-    // println!("{:?}", seen);
 }
 
 fn parse_input(input: &str) -> Vec<(i32, i32)> {
